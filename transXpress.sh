@@ -2,7 +2,7 @@
 
 echo "Running the transXpress pipeline using snakemake"
 
-CLUSTER="NONE"
+CLUSTER="slurm"
 
 if [ ! -z `which sbatch` ]; then
   CLUSTER="SLURM"
@@ -23,7 +23,7 @@ case "$CLUSTER" in
   ;;
 "SLURM")
   echo "Submitting snakemake jobs to SLURM cluster"
-  snakemake --conda-frontend conda --use-conda --latency-wait 60 --restart-times 1 --jobs 10000 --cluster "sbatch -o {log}.slurm.out -e {log}.slurm.err -n {threads} --mem {params.memory}GB" "$@"
+  snakemake --conda-frontend conda --use-conda --latency-wait 60 --restart-times 1 --jobs 10000 --cluster "sbatch  --comment RnD --partition i192,i128-o {log}.slurm.out -e {log}.slurm.err -n {threads} --mem {params.memory}GB" "$@"
   ;;
 "PBS")
   echo "Submitting snakemake jobs to PBS/Torque cluster"

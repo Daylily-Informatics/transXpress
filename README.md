@@ -44,11 +44,11 @@ The conda dependencies are installed in smaller conda environments automatically
 git clone https://github.com/transXpress/transXpress.git
 ~~~~
 
-2. Install [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)
+2. Install [Condaforge](https://github.com/conda-forge/miniforge#condaforge)
 ~~~~
-curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh"
-bash Mambaforge-Linux-x86_64.sh
-rm Mambaforge-Linux-x86_64.sh
+curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Condaforge-Linux-x86_64.sh"
+bash Condaforge-Linux-x86_64.sh
+rm Condaforge-Linux-x86_64.sh
 ~~~~
 
 3. To ensure correct versions of R packages will be used unset R_LIBS_SITE
@@ -58,11 +58,11 @@ unset R_LIBS_SITE
 
 4. Setup main transXpress conda environment:
 ~~~~
-mamba activate base
-mamba create -c conda-forge -c bioconda --name transxpress
-mamba activate transxpress
+conda activate base
+conda create -c conda-forge -c bioconda --name transxpress
+conda activate transxpress
 conda config --set channel_priority disabled
-mamba env update --file envs/default.yaml
+conda env update --file envs/default.yaml
 ~~~~
 * (TIP: if you have a problem updating the default environment try putting python 3.9 into the *defaults.yaml* file)
 
@@ -90,21 +90,21 @@ mamba env update --file envs/default.yaml
 
 8. Setup other conda environments (This will take a while):
 ~~~~
-snakemake --use-conda --conda-frontend mamba --conda-create-envs-only --cores 10
+snakemake --use-conda --conda-frontend conda --conda-create-envs-only --cores 10
 ~~~~
 
 9. Install SignalP 6.0 (fast):
       * Download SignalP 6.0 fast from https://services.healthtech.dtu.dk/services/SignalP-6.0/ (go to Downloads)
       * Unpack and install signalp:
         ~~~~
-         mamba env create -f envs/signalp.yaml
-         mamba activate signalp
+         conda env create -f envs/signalp.yaml
+         conda activate signalp
          tar zxvf signalp-6.0h.fast.tar.gz
          cd signalp6_fast
          pip install signalp-6-package/
          SIGNALP_DIR=$(python -c "import signalp; import os; print(os.path.dirname(signalp.__file__))" )
          cp -r signalp-6-package/models/* $SIGNALP_DIR/model_weights/
-         mamba deactivate
+         conda deactivate
         ~~~~
         (make sure the conda python is used, or use the full path to python from your conda installation)
 
@@ -112,11 +112,11 @@ snakemake --use-conda --conda-frontend mamba --conda-create-envs-only --cores 10
       * Download TargetP 2.0 from https://services.healthtech.dtu.dk/software.php
       * extract the tarball and add path to targetp /bin/ folder to the PATH variable
         ~~~~
-         mamba env create -f envs/targetp.yaml
-         mamba activate targetp
+         conda env create -f envs/targetp.yaml
+         conda activate targetp
          tar zxvf targetp-2.0.Linux.tar.gz
          export PATH=$PATH:`pwd`/targetp-2.0/bin
-         mamba deactivate
+         conda deactivate
         ~~~~
 
 ## Running transXpress
